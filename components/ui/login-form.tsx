@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { login } from "@/actions/login.action";
+import PasswordInput from "./input-icon";
 
 export default function LoginForm() {
     return (
@@ -34,13 +35,7 @@ export default function LoginForm() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="Enter your password"
-                                required
-                            />
+                            <PasswordInput />
                         </div>
                         <Button type="submit" className="w-full">
                             Login
@@ -52,7 +47,7 @@ export default function LoginForm() {
                 <p className="text-sm text-gray-600">
                     Don&apos;t have an account?{" "}
                     <Link
-                        href="/signup"
+                        href="/sign-up"
                         className="text-blue-600 hover:underline"
                     >
                         Sign up
