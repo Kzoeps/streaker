@@ -9,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { login } from "@/actions/login.action";
 import PasswordInput from "./input-icon";
 
 export default function LoginForm() {
@@ -21,7 +20,7 @@ export default function LoginForm() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form action={login} name="login">
+                <form name="login">
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>

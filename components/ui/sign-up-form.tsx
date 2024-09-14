@@ -9,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { signUp } from "@/actions/login.action";
 import PasswordInput from "./input-icon";
 
 export default function SignupForm() {
@@ -21,7 +20,7 @@ export default function SignupForm() {
                 </CardTitle>
             </CardHeader>
             <CardContent>
-                <form action={signUp}>
+                <form>
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="name">Name</Label>
