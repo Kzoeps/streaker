@@ -1,3 +1,4 @@
+import AddDialog from "@/components/ui/add-dialog";
 import StreakCard from "@/components/ui/streak-card";
 
 type CardData = {
@@ -39,6 +40,7 @@ export default function Dashboard() {
     return (
         <div>
             <CardGrid />
+            <AddDialog />
         </div>
     );
 }
