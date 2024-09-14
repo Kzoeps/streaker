@@ -1,5 +1,5 @@
 import AddDialog from "@/components/ui/add-dialog";
-import SliderButton from "@/components/ui/slider-button";
+// import SliderButton from "@/components/ui/slider-button";
 import StreakCard from "@/components/ui/streak-card";
 
 type CardData = {
@@ -42,7 +42,7 @@ export default function Dashboard() {
         <div>
             <CardGrid />
             <AddDialog />
-            <SliderButton />
+            {/* <SliderButton /> */}
         </div>
     );
 }
