@@ -20,27 +20,22 @@ const cardData: CardData[] = [
     { id: 8, title: "Cook Dinner", fireCount: 4, checked: true },
 ];
 
-export function CardGrid() {
-    return (
-        <div className="container mx-auto p-4">
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {cardData.map(({ id, title, fireCount, checked }) => (
-                    <StreakCard
-                        key={id}
-                        id={id}
-                        title={title}
-                        streakCount={fireCount}
-                        checked={checked}
-                    />
-                ))}
-            </div>
-        </div>
-    );
-}
 export default function Dashboard() {
     return (
         <div>
-            <CardGrid />
+            <div className="container mx-auto p-4">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {cardData.map(({ id, title, fireCount, checked }) => (
+                        <StreakCard
+                            key={id}
+                            id={id}
+                            title={title}
+                            streakCount={fireCount}
+                            checked={checked}
+                        />
+                    ))}
+                </div>
+            </div>
             <AddDialog />
             {/* <SliderButton /> */}
         </div>
