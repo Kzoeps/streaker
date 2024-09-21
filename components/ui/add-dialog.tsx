@@ -18,10 +18,10 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 export default function AddDialog() {
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleConfirm = () => {
-        // Here you would typically handle the new streaker creation
-        setIsOpen(false);
-    };
+    // const handleConfirm = () => {
+    //     // Here you would typically handle the new streaker creation
+    //     setIsOpen(false);
+    // };
 
     return (
         <>
@@ -66,9 +66,7 @@ export default function AddDialog() {
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit" onClick={handleConfirm}>
-                                    Confirm
-                                </Button>
+                                <Button type="submit">Confirm</Button>
                             </DialogFooter>
                         </form>
                     </DialogContent>
