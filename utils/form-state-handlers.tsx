@@ -10,19 +10,30 @@ export interface BaseFormState {
     message: string | null;
 }
 
+export interface ZodFormState extends BaseFormState {
+    fieldErrors?: Record<string, string[] | undefined>;
+}
+
 export const fromErrorToFormState = (error: unknown) => {
-    const errorResponse: BaseFormState = {
+    const errorResponse: ZodFormState = {
         status: FormStatusTypes.ERROR,
         message: null,
     };
     if (error instanceof ZodError) {
-        errorResponse.message = error.errors[0].message;
-        return errorResponse;
+        return {
+            ...errorResponse,
+            message: "",
+            fieldErrors: error.flatten().fieldErrors,
+        };
     } else if (error instanceof Error) {
-        errorResponse.message = error.message;
-        return errorResponse;
+        return {
+            ...errorResponse,
+            message: error.message,
+        };
     } else {
-        errorResponse.message = "An error occurred, please try again";
-        return errorResponse;
+        return {
+            ...errorResponse,
+            message: "An error occurred",
+        };
     }
 };

@@ -12,11 +12,13 @@ import {
 import { Label } from "./label";
 
 import { createStreak } from "@/actions";
+import { FormStatusTypes } from "@/utils/form-state-handlers";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useFormState } from "react-dom";
 import { SubmitButton } from "../submit-button";
 import { Input } from "./input";
-import { useFormState } from "react-dom";
-import { FormStatusTypes } from "@/utils/form-state-handlers";
+import { FieldError } from "../field-error";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AddDialog() {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,12 +26,22 @@ export default function AddDialog() {
         status: FormStatusTypes.NA,
         message: null,
     });
+    const { toast } = useToast();
 
     useEffect(() => {
         if (formState.status === FormStatusTypes.SUCCESS) {
             setIsOpen(false);
         }
-    }, [formState]);
+        if (formState.message) {
+            toast({
+                title: formState.message,
+                variant:
+                    formState.status === FormStatusTypes.ERROR
+                        ? "destructive"
+                        : "default",
+            });
+        }
+    }, [formState.message, formState.status, toast]);
     return (
         <>
             <Button
@@ -50,7 +62,7 @@ export default function AddDialog() {
                             </DialogDescription>
                         </DialogHeader>
                         <form action={action}>
-                            <div className="grid gap-4 py-4">
+                            <div className="grid py-4">
                                 <div className="flex items-center gap-3">
                                     <Label
                                         htmlFor="name"
@@ -59,12 +71,15 @@ export default function AddDialog() {
                                         Name
                                     </Label>
                                     <Input
+                                        // required
+                                        // max={35}
                                         autoComplete="off"
                                         id="name"
                                         name="name"
                                         className="col-span-3"
                                     />
                                 </div>
+                                <FieldError formState={formState} name="name" />
                             </div>
                             <DialogFooter className="flex flex-row justify-end gap-4">
                                 <Button
