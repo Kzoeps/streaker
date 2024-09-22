@@ -13,7 +13,6 @@ export default async function Dashboard() {
     if (data.rowCount === 0) {
         return <NoStreaks />;
     }
-    console.log(data.rows)
     return (
         <div>
             <div className="container mx-auto p-4">

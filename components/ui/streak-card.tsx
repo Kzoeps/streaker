@@ -4,6 +4,7 @@ import { Streak } from "@/actions";
 import SliderButton from "./slider-button";
 import { toTitleCase } from "@/lib/utils";
 import StreaksInfo from "./streaks-info-confirmation";
+import { StreakCardCheckButton } from "./streak-card-check-button";
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
@@ -41,20 +42,15 @@ export default function StreakCard({
                                 {streakcount}
                             </span>
                         </div>
-                        <button
-                            className={`rounded-full p-1 ${
-                                checked ? "bg-green-500" : "bg-gray-200"
-                            }`}
-                        >
-                            <Check className="h-4 w-4 text-white" />
-                        </button>
+                        <StreakCardCheckButton
+                            name={name}
+                            streakcount={streakcount}
+                            id={id}
+                            checked={checked}
+                        />
                     </div>
                 </CardContent>
             </Card>
-            <div className="absolute inset-0 top-1/3 z-30 max-h-48">
-                <StreaksInfo name={name} streakcount={streakcount} />
-            </div>
-            <SliderButton />
         </>
     );
 }

@@ -7,7 +7,7 @@ export type StreaksInfoProps = Pick<Streak, "name" | "streakcount">;
 export default function StreaksInfo({ name, streakcount }: StreaksInfoProps) {
     return (
         <div className="flex items-center justify-center p-4">
-            <Card className="w-full max-w-sm bg-white/90 shadow-lg backdrop-blur-sm">
+            <Card className="w-full max-w-sm bg-white shadow-lg backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-2xl font-bold">
                         {toTitleCase(name)}
