@@ -9,6 +9,7 @@ export const useFormToast = (formState: ZodFormState) => {
         formState.timeStamp !== prevTimeStamp.current &&
         formState.status === FormStatusTypes.ERROR;
     useEffect(() => {
+        console.log(formState);
         if (showToast) {
             toast({
                 title: formState.message as string,

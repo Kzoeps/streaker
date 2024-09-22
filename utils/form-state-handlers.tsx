@@ -15,6 +15,13 @@ export interface ZodFormState extends BaseFormState {
     timeStamp: number;
 }
 
+export const EMPTY_ZOD_FORM_STATE = {
+    status: FormStatusTypes.NA,
+    message: "",
+    fieldErrors: {},
+    timeStamp: Date.now(),
+} as const;
+
 export const fromErrorToFormState = (error: unknown) => {
     if (error instanceof ZodError) {
         return {

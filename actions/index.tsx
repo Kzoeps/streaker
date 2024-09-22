@@ -44,3 +44,30 @@ export async function createStreak(
         return fromErrorToFormState(e);
     }
 }
+
+const IncreaseStreakSchema = z.object({
+    id: z.string().trim().min(10),
+});
+
+export async function addStreak(formState: ZodFormState, formData: FormData) {
+    try {
+        const { userId } = auth();
+        const payload = IncreaseStreakSchema.parse({
+            id: formData.get("id"),
+        });
+        const streakData =
+            await sql<Streak>`SELECT (streakcount) FROM Streaks WHERE userId = ${userId} AND id = ${payload.id}`;
+        if (streakData.rowCount) {
+            const streakCount = streakData.rows[0].streakcount;
+            return {
+                status: FormStatusTypes.SUCCESS,
+                message: `Streak Count: ${streakCount}`,
+                timeStamp: Date.now(),
+            };
+            // await sql<Streak>``
+        }
+        throw new Error("Couldn't find streak");
+    } catch (e) {
+        return fromErrorToFormState(e);
+    }
+}

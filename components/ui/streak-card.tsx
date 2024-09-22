@@ -1,9 +1,7 @@
-import { Flame, Check } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./card";
 import { Streak } from "@/actions";
-import SliderButton from "./slider-button";
 import { toTitleCase } from "@/lib/utils";
-import StreaksInfo from "./streaks-info-confirmation";
+import { Flame } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "./card";
 import { StreakCardCheckButton } from "./streak-card-check-button";
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
