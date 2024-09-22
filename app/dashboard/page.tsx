@@ -27,7 +27,6 @@ export default async function Dashboard() {
                         />
                     ))}
                 </div>
-                <div>You dont have any streaks yet</div>
             </div>
             <AddDialog />
             {/* <SliderButton /> */}
