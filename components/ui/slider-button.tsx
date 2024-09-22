@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LoaderCircle, LoaderPinwheel } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import StreaksInfo from "./streaks-info-confirmation";
 import { useFormState } from "react-dom";
@@ -10,6 +10,7 @@ import {
     FormStatusTypes,
 } from "@/utils/form-state-handlers";
 import { useFormToast } from "@/hooks/use-form-toast";
+import { cn } from "@/lib/utils";
 
 export interface SliderButtonProps {
     id: string;
@@ -21,6 +22,7 @@ export default function SliderButton({
     handleComplete,
 }: SliderButtonProps) {
     const [sliderPosition, setSliderPosition] = useState(0);
+    const [disableSlider, setDisableSlider] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
     const sliderRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLDivElement>(null);
@@ -41,7 +43,6 @@ export default function SliderButton({
         return false;
     };
     const handleStart = (clientX: number) => {
-        console.log(clientX);
         setIsDragging(true);
     };
 
@@ -49,7 +50,7 @@ export default function SliderButton({
         if (!isDragging) return;
         const slider = sliderRef.current;
         const button = buttonRef.current;
-        if (slider && button) {
+        if (slider && button && !disableSlider) {
             const sliderRect = slider.getBoundingClientRect();
             const buttonWidth = button.offsetWidth;
             const newPosition = Math.max(
@@ -72,6 +73,7 @@ export default function SliderButton({
                 10
         ) {
             if (formRef.current) {
+                setDisableSlider(true);
                 formRef.current.requestSubmit();
             }
         } else {
@@ -93,9 +95,11 @@ export default function SliderButton({
 
     useEffect(() => {
         if (formState.status === FormStatusTypes.ERROR) {
+            setDisableSlider(false);
             setSliderPosition(0);
         }
         if (formState.status === FormStatusTypes.SUCCESS) {
+            setDisableSlider(false);
             handleComplete();
         }
     }, [formState.status, formState.timeStamp]);
@@ -127,10 +131,14 @@ export default function SliderButton({
                     <div className="fixed inset-0 bg-black opacity-30"></div>
                     <div
                         ref={sliderRef}
-                        className="relative z-50 h-14 cursor-pointer overflow-hidden rounded-full border-4 border-orange-100 bg-orange-100"
+                        className={cn(
+                            "relative z-50 h-14 cursor-pointer overflow-hidden rounded-full border-4 border-orange-100 bg-orange-100"
+                        )}
                     >
                         <div
-                            className="absolute inset-0 z-10 h-12 bg-orange-500 transition-all duration-300 ease-out"
+                            className={cn(
+                                "absolute inset-0 z-10 h-12 bg-orange-500 transition-all duration-300 ease-out"
+                            )}
                             style={{
                                 // width: `${(sliderPosition / (sliderRef.current?.offsetWidth || 1)) * 100}%`,
                                 width: `${isDragging || isSliderComplete() ? sliderPosition + (buttonRef.current?.offsetWidth || 2) / 2 : 0}px`,
@@ -150,12 +158,22 @@ export default function SliderButton({
                             onMouseUp={handleMouseUp}
                             onMouseLeave={handleMouseUp}
                             ref={buttonRef}
-                            className="absolute z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 ease-out"
+                            className={cn(
+                                "absolute z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 ease-out"
+                            )}
                             style={{
                                 transform: `translateX(${sliderPosition}px)`,
                             }}
                         >
-                            <ArrowRight className="text-orange-500" size={24} />
+                            {!disableSlider && (
+                                <ArrowRight
+                                    className={cn("text-orange-500")}
+                                    size={24}
+                                />
+                            )}
+                            {disableSlider && (
+                                <LoaderCircle className="animate-spin text-orange-400" />
+                            )}
                         </div>
                     </div>
                 </div>
