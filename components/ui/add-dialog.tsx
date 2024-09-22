@@ -53,7 +53,7 @@ export default function AddDialog() {
                                 Create a new streaker
                             </DialogDescription>
                         </DialogHeader>
-                        <form action={action}>
+                        <form id="addForm" action={action}>
                             <div className="grid py-4">
                                 <div className="flex items-center gap-3">
                                     <Label
@@ -73,6 +73,8 @@ export default function AddDialog() {
                                 </div>
                                 <FieldError formState={formState} name="name" />
                             </div>
+                            {/* for on enter */}
+                            <input type="submit" className="hidden" />
                             <DialogFooter className="flex flex-row justify-end gap-4">
                                 <Button
                                     variant="outline"
