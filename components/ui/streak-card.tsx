@@ -1,23 +1,21 @@
 import { Flame, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import { Streak } from "@/actions";
 
-export interface StreakCardProps {
-    id: number;
-    title: string;
-    streakCount: number;
+export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
 }
 
 export default function StreakCard({
     id,
-    title,
+    name,
     streakCount,
     checked,
 }: StreakCardProps) {
     return (
         <Card key={id} className="relative">
             <CardHeader className="pb-2">
-                <CardTitle>{title}</CardTitle>
+                <CardTitle>{name}</CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="flex items-center justify-between">

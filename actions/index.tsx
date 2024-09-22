@@ -15,6 +15,14 @@ const Streak = z.object({
         .min(1, "Name is required")
         .max(35, "Name must be less than 35 characters"),
 });
+
+export interface Streak {
+    name: string;
+    userId: string;
+    streakCount: number;
+    id: string;
+}
+
 export async function createStreak(
     formState: ZodFormState,
     formData: FormData
