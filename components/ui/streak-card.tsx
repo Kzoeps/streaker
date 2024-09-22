@@ -2,6 +2,8 @@ import { Flame, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
 import { Streak } from "@/actions";
 import SliderButton from "./slider-button";
+import { toTitleCase } from "@/lib/utils";
+import StreaksInfo from "./streaks-info-confirmation";
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
@@ -17,7 +19,7 @@ export default function StreakCard({
         <>
             <Card key={id} className="relative">
                 <CardHeader className="pb-2">
-                    <CardTitle>{name}</CardTitle>
+                    <CardTitle>{toTitleCase(name)}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-between">
@@ -49,6 +51,9 @@ export default function StreakCard({
                     </div>
                 </CardContent>
             </Card>
+            <div className="absolute inset-0 top-1/3 z-30">
+                <StreaksInfo name={name} streakCount={0} />
+            </div>
             <SliderButton />
         </>
     );

@@ -85,9 +85,7 @@ export default function SliderButton() {
 
     return (
         <>
-            <div className="absolute inset-0 top-1/3 z-30">
-                <StreaksInfo />
-            </div>
+
             <div className="fixed bottom-4 left-4 right-4 z-20 mx-auto max-w-md">
                 <div className="fixed inset-0 bg-black opacity-30"></div>
                 <div
