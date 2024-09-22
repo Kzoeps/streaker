@@ -1,28 +1,35 @@
 "use client";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./button";
 import {
     Dialog,
     DialogContent,
-    DialogTitle,
-    DialogHeader,
     DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from "./dialog";
 import { Label } from "./label";
 
-import { Input } from "./input";
 import { createStreak } from "@/actions";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { SubmitButton } from "../submit-button";
+import { Input } from "./input";
+import { useFormState } from "react-dom";
+import { FormStatusTypes } from "@/utils/form-state-handlers";
 
 export default function AddDialog() {
     const [isOpen, setIsOpen] = useState(false);
+    const [formState, action] = useFormState(createStreak, {
+        status: FormStatusTypes.NA,
+        message: null,
+    });
 
-    // const handleConfirm = () => {
-    //     // Here you would typically handle the new streaker creation
-    //     setIsOpen(false);
-    // };
-
+    useEffect(() => {
+        if (formState.status === FormStatusTypes.SUCCESS) {
+            setIsOpen(false);
+        }
+    }, [formState]);
     return (
         <>
             <Button
@@ -42,7 +49,7 @@ export default function AddDialog() {
                                 Create a new streaker
                             </DialogDescription>
                         </DialogHeader>
-                        <form action={createStreak}>
+                        <form action={action}>
                             <div className="grid gap-4 py-4">
                                 <div className="flex items-center gap-3">
                                     <Label
@@ -66,7 +73,9 @@ export default function AddDialog() {
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit">Confirm</Button>
+                                <SubmitButton loading={"Adding"}>
+                                    Add
+                                </SubmitButton>
                             </DialogFooter>
                         </form>
                     </DialogContent>
