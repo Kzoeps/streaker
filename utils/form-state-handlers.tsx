@@ -12,28 +12,28 @@ export interface BaseFormState {
 
 export interface ZodFormState extends BaseFormState {
     fieldErrors?: Record<string, string[] | undefined>;
+    timeStamp: number;
 }
 
 export const fromErrorToFormState = (error: unknown) => {
-    const errorResponse: ZodFormState = {
-        status: FormStatusTypes.ERROR,
-        message: null,
-    };
     if (error instanceof ZodError) {
         return {
-            ...errorResponse,
+            status: FormStatusTypes.ERROR,
             message: "",
             fieldErrors: error.flatten().fieldErrors,
+            timeStamp: Date.now(),
         };
     } else if (error instanceof Error) {
         return {
-            ...errorResponse,
+            status: FormStatusTypes.ERROR,
             message: error.message,
+            timeStamp: Date.now(),
         };
     } else {
         return {
-            ...errorResponse,
+            status: FormStatusTypes.ERROR,
             message: "An error occurred",
+            timeStamp: Date.now(),
         };
     }
 };

@@ -12,36 +12,28 @@ import {
 import { Label } from "./label";
 
 import { createStreak } from "@/actions";
+import { useFormToast } from "@/hooks/use-form-toast";
 import { FormStatusTypes } from "@/utils/form-state-handlers";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useFormState } from "react-dom";
+import { FieldError } from "../field-error";
 import { SubmitButton } from "../submit-button";
 import { Input } from "./input";
-import { FieldError } from "../field-error";
-import { useToast } from "@/hooks/use-toast";
 
 export default function AddDialog() {
     const [isOpen, setIsOpen] = useState(false);
     const [formState, action] = useFormState(createStreak, {
         status: FormStatusTypes.NA,
         message: null,
+        timeStamp: Date.now(),
     });
-    const { toast } = useToast();
+    useFormToast(formState);
 
     useEffect(() => {
         if (formState.status === FormStatusTypes.SUCCESS) {
             setIsOpen(false);
         }
-        if (formState.message) {
-            toast({
-                title: formState.message,
-                variant:
-                    formState.status === FormStatusTypes.ERROR
-                        ? "destructive"
-                        : "default",
-            });
-        }
-    }, [formState.message, formState.status, toast]);
+    }, [formState.timeStamp, formState.status]);
     return (
         <>
             <Button

@@ -28,6 +28,7 @@ export async function createStreak(
         return {
             status: FormStatusTypes.SUCCESS,
             message: "Successfully created a streak",
+            timeStamp: Date.now(),
         };
     } catch (e) {
         return fromErrorToFormState(e);
