@@ -5,7 +5,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import StreaksInfo from "./streaks-info-confirmation";
 import { useFormState } from "react-dom";
 import { addStreak } from "@/actions";
-import { EMPTY_ZOD_FORM_STATE } from "@/utils/form-state-handlers";
+import {
+    EMPTY_ZOD_FORM_STATE,
+    FormStatusTypes,
+} from "@/utils/form-state-handlers";
 import { useFormToast } from "@/hooks/use-form-toast";
 
 export default function SliderButton() {
@@ -79,6 +82,12 @@ export default function SliderButton() {
     const handleMouseDown = (e: React.MouseEvent) => handleStart(e.clientX);
     const handleMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
     const handleMouseUp = () => handleEnd();
+
+    useEffect(() => {
+        if (formState.status === FormStatusTypes.ERROR) {
+            setSliderPosition(0);
+        }
+    }, [formState.status, formState.timeStamp]);
 
     useEffect(() => {
         const handleGlobalMouseUp = () => {
