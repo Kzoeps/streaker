@@ -5,7 +5,9 @@ import { toast } from "./use-toast";
 export const useFormToast = (formState: ZodFormState) => {
     const prevTimeStamp = useRef(formState.timeStamp);
     const showToast =
-        formState.message && formState.timeStamp !== prevTimeStamp.current;
+        formState.message &&
+        formState.timeStamp !== prevTimeStamp.current &&
+        formState.status === FormStatusTypes.ERROR;
     useEffect(() => {
         if (showToast) {
             toast({

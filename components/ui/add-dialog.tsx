@@ -23,7 +23,7 @@ export default function AddDialog({ children }: AddDialogProps) {
                 ButtonWithProps
             ) : (
                 <Button
-                    className="fixed bottom-4 right-4 h-12 w-12 rounded-full p-0"
+                    className="fixed bottom-4 right-4 h-12 w-12 rounded-full bg-orange-500 p-0"
                     onClick={() => setIsOpen(true)}
                 >
                     <Plus className="h-6 w-6" />
