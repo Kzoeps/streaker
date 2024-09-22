@@ -6,6 +6,7 @@ import {
 } from "@/utils/form-state-handlers";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 const Streak = z.object({
@@ -33,6 +34,7 @@ export async function createStreak(
             name: formData.get("name"),
         });
         await sql`INSERT INTO Streaks (id, name, userId) VALUES (${crypto.randomUUID()}, ${data.name as string}, ${userId})`;
+        revalidatePath("/dashboard");
         return {
             status: FormStatusTypes.SUCCESS,
             message: "Successfully created a streak",

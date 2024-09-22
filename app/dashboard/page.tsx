@@ -1,4 +1,5 @@
 import { Streak } from "@/actions";
+import NoStreaks from "@/app/dashboard/splash-no-streaks";
 import AddDialog from "@/components/ui/add-dialog";
 // import SliderButton from "@/components/ui/slider-button";
 import StreakCard from "@/components/ui/streak-card";
@@ -9,7 +10,9 @@ export default async function Dashboard() {
     const { userId } = auth();
     const data =
         await sql<Streak>`SELECT * FROM Streaks WHERE userId = ${userId}`;
-    console.log(data.rows);
+    if (data.rowCount === 0) {
+        return <NoStreaks />;
+    }
     return (
         <div>
             <div className="container mx-auto p-4">
@@ -24,6 +27,7 @@ export default async function Dashboard() {
                         />
                     ))}
                 </div>
+                <div>You dont have any streaks yet</div>
             </div>
             <AddDialog />
             {/* <SliderButton /> */}
