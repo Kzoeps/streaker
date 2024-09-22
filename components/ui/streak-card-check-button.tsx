@@ -11,9 +11,14 @@ import { X } from "lucide-react";
 export const StreakCardCheckButton = ({
     checked,
     name,
+    id,
     streakcount,
 }: StreakCardProps) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
+
+    const handleComplete = () => {
+        setShowConfirmation(false);
+    };
     return (
         <>
             <button
@@ -36,7 +41,7 @@ export const StreakCardCheckButton = ({
                     <div className="fixed inset-0 top-1/3 z-30 max-h-48">
                         <StreaksInfo name={name} streakcount={streakcount} />
                     </div>
-                    <SliderButton />
+                    <SliderButton id={id} handleComplete={handleComplete} />
                 </>
             )}
         </>

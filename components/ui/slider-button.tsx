@@ -11,7 +11,15 @@ import {
 } from "@/utils/form-state-handlers";
 import { useFormToast } from "@/hooks/use-form-toast";
 
-export default function SliderButton() {
+export interface SliderButtonProps {
+    id: string;
+    handleComplete: () => void;
+}
+
+export default function SliderButton({
+    id,
+    handleComplete,
+}: SliderButtonProps) {
     const [sliderPosition, setSliderPosition] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const sliderRef = useRef<HTMLDivElement>(null);
@@ -87,6 +95,9 @@ export default function SliderButton() {
         if (formState.status === FormStatusTypes.ERROR) {
             setSliderPosition(0);
         }
+        if (formState.status === FormStatusTypes.SUCCESS) {
+            handleComplete();
+        }
     }, [formState.status, formState.timeStamp]);
 
     useEffect(() => {
@@ -105,10 +116,11 @@ export default function SliderButton() {
         <>
             <form ref={formRef} action={action}>
                 <input
+                    required
                     name="id"
                     type="text"
                     className="hidden"
-                    value={"asdfjadslkfjlkdasjf12312231"}
+                    value={id}
                     readOnly
                 />
                 <div className="fixed bottom-4 left-4 right-4 z-20 mx-auto max-w-md">
