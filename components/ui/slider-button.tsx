@@ -85,12 +85,11 @@ export default function SliderButton() {
 
     return (
         <>
-
             <div className="fixed bottom-4 left-4 right-4 z-20 mx-auto max-w-md">
                 <div className="fixed inset-0 bg-black opacity-30"></div>
                 <div
                     ref={sliderRef}
-                    className="relative z-10 h-14 cursor-pointer overflow-hidden rounded-full border-4 border-blue-100 bg-blue-100"
+                    className="relative z-50 h-14 cursor-pointer overflow-hidden rounded-full border-4 border-blue-100 bg-blue-100"
                 >
                     <div
                         className="absolute inset-0 z-10 h-12 bg-blue-500 transition-all duration-300 ease-out"

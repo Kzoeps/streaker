@@ -22,12 +22,14 @@ export default function AddDialog({ children }: AddDialogProps) {
             {children ? (
                 ButtonWithProps
             ) : (
-                <Button
-                    className="fixed bottom-4 right-4 h-12 w-12 rounded-full bg-orange-500 p-0"
-                    onClick={() => setIsOpen(true)}
-                >
-                    <Plus className="h-6 w-6" />
-                </Button>
+                <div className="relative z-10">
+                    <Button
+                        className="fixed bottom-4 right-4 h-12 w-12 rounded-full bg-orange-500 p-0"
+                        onClick={() => setIsOpen(true)}
+                    >
+                        <Plus className="h-6 w-6" />
+                    </Button>
+                </div>
             )}
 
             <AddForm isOpen={isOpen} setIsOpen={setIsOpen} />
