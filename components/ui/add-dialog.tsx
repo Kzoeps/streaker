@@ -63,8 +63,8 @@ export default function AddDialog() {
                                         Name
                                     </Label>
                                     <Input
-                                        // required
-                                        // max={35}
+                                        required
+                                        max={35}
                                         autoComplete="off"
                                         id="name"
                                         name="name"
