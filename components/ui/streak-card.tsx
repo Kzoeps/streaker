@@ -12,7 +12,7 @@ export interface StreakCardProps extends Omit<Streak, "userId"> {
 export default function StreakCard({
     id,
     name,
-    streakCount,
+    streakcount,
     checked,
 }: StreakCardProps) {
     return (
@@ -26,19 +26,19 @@ export default function StreakCard({
                         <div className="flex items-center space-x-1">
                             <Flame
                                 className={`h-5 w-5 ${
-                                    streakCount > 0
+                                    streakcount > 0
                                         ? "text-orange-500"
                                         : "text-gray-300"
                                 }`}
                             />
                             <span
                                 className={`${
-                                    streakCount > 0
+                                    streakcount > 0
                                         ? "text-orange-500"
                                         : "text-gray-300"
                                 }`}
                             >
-                                {streakCount}
+                                {streakcount}
                             </span>
                         </div>
                         <button
@@ -52,7 +52,7 @@ export default function StreakCard({
                 </CardContent>
             </Card>
             <div className="absolute inset-0 top-1/3 z-30 max-h-48">
-                <StreaksInfo name={name} streakCount={0} />
+                <StreaksInfo name={name} streakcount={streakcount} />
             </div>
             <SliderButton />
         </>

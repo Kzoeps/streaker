@@ -13,18 +13,19 @@ export default async function Dashboard() {
     if (data.rowCount === 0) {
         return <NoStreaks />;
     }
+    console.log(data.rows)
     return (
         <div>
             <div className="container mx-auto p-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {data?.rows
                         ?.splice(0, 1)
-                        .map(({ id, name, streakCount }, index) => (
+                        .map(({ id, name, streakcount }, index) => (
                             <StreakCard
                                 key={id}
                                 id={id}
                                 name={name}
-                                streakCount={index % 2 === 0 ? streakCount : 3}
+                                streakcount={streakcount}
                                 checked={index % 2 === 1 ? true : false}
                             />
                         ))}

@@ -20,7 +20,7 @@ const Streak = z.object({
 export interface Streak {
     name: string;
     userId: string;
-    streakCount: number;
+    streakcount: number;
     id: string;
 }
 

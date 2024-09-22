@@ -1,12 +1,10 @@
+import { Streak } from "@/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toTitleCase } from "@/lib/utils";
 import { Flame } from "lucide-react";
 
-export interface StreaksInfoProps {
-    name: string;
-    streakCount: number;
-}
-export default function StreaksInfo({ name, streakCount }: StreaksInfoProps) {
+export type StreaksInfoProps = Pick<Streak, "name" | "streakcount">;
+export default function StreaksInfo({ name, streakcount }: StreaksInfoProps) {
     return (
         <div className="flex items-center justify-center p-4">
             <Card className="w-full max-w-sm bg-white/90 shadow-lg backdrop-blur-sm">
@@ -21,7 +19,7 @@ export default function StreaksInfo({ name, streakCount }: StreaksInfoProps) {
                     >
                         <Flame className="h-5 w-5 text-white" />
                         <span className="font-semibold text-white">
-                            {streakCount}
+                            {streakcount}
                         </span>
                     </div>
                 </CardHeader>
@@ -36,20 +34,20 @@ export default function StreaksInfo({ name, streakCount }: StreaksInfoProps) {
                                 Progress
                             </span>
                             <span className="text-sm font-semibold">
-                                {(streakCount % 10) * 10}%
+                                {(streakcount % 10) * 10}%
                             </span>
                         </div>
                         <div className="h-2.5 w-full rounded-full bg-gray-200">
                             <div
                                 className="h-2.5 rounded-full bg-orange-500"
-                                style={{ width: `${(streakCount % 10) * 10}%` }}
+                                style={{ width: `${(streakcount % 10) * 10}%` }}
                             ></div>
                         </div>
                     </div>
                     <p className="mt-4 text-xs text-gray-500">
                         Next milestone:{" "}
-                        {Math.ceil((streakCount || 1) / 10) * 10} day streak (
-                        {10 - (streakCount % 10)} days to go)
+                        {Math.ceil((streakcount || 1) / 10) * 10} day streak (
+                        {10 - (streakcount % 10)} days to go)
                     </p>
                 </CardContent>
             </Card>
