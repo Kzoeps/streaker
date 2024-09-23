@@ -8,6 +8,10 @@ import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import dayjs, { Dayjs } from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 const Streak = z.object({
     name: z
@@ -22,6 +26,7 @@ export interface Streak {
     userId: string;
     streakcount: number;
     id: string;
+    last_completed_at: string;
 }
 
 export async function createStreak(
@@ -49,6 +54,10 @@ const IncreaseStreakSchema = z.object({
     id: z.string().trim().min(10),
 });
 
+const isValidUpdate = (today: Dayjs, lastCompleted: Dayjs) => {
+    return today.diff(lastCompleted) > 24;
+};
+
 export async function addStreak(formState: ZodFormState, formData: FormData) {
     try {
         const { userId } = auth();
@@ -56,18 +65,23 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
             id: formData.get("id"),
         });
         const streakData =
-            await sql<Streak>`SELECT (streakcount) FROM Streaks WHERE userId = ${userId} AND id = ${payload.id}`;
+            await sql<Streak>`SELECT streakcount, last_completed_at FROM Streaks WHERE userId = ${userId} AND id = ${payload.id}`;
         if (streakData.rowCount) {
+            const data = streakData.rows[0];
+            const today = dayjs().utc();
+            const last_completed_at = dayjs(data.last_completed_at);
+            if (!isValidUpdate(today, last_completed_at)) {
+                throw new Error("Already updated streak for today");
+            }
             const updatedStreakCount =
                 (streakData.rows[0].streakcount ?? 0) + 1;
-            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount} WHERE id = ${payload.id} AND userId = ${userId}`;
+            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = ${today.toDate().toISOString()} WHERE id = ${payload.id} AND userId = ${userId}`;
             revalidatePath("/dashboard");
             return {
                 status: FormStatusTypes.SUCCESS,
                 message: `Streak Count: ${updatedStreakCount}`,
                 timeStamp: Date.now(),
             };
-            // await sql<Streak>``
         }
         throw new Error("Couldn't find streak");
     } catch (e) {
