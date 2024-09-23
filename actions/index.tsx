@@ -4,12 +4,13 @@ import {
     fromErrorToFormState,
     ZodFormState,
 } from "@/utils/form-state-handlers";
+import { isValidUpdate } from "@/utils/misc-utils";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import dayjs, { Dayjs } from "dayjs";
-import utc from "dayjs/plugin/utc";
 
 dayjs.extend(utc);
 
@@ -53,10 +54,6 @@ export async function createStreak(
 const IncreaseStreakSchema = z.object({
     id: z.string().trim().min(10),
 });
-
-const isValidUpdate = (today: Dayjs, lastCompleted: Dayjs) => {
-    return today.diff(lastCompleted) > 24;
-};
 
 export async function addStreak(formState: ZodFormState, formData: FormData) {
     try {

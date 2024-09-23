@@ -17,15 +17,18 @@ export default async function Dashboard() {
         <div>
             <div className="container mx-auto p-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {data?.rows.map(({ id, name, streakcount }, index) => (
-                        <StreakCard
-                            key={id}
-                            id={id}
-                            name={name}
-                            streakcount={streakcount}
-                            checked={false}
-                        />
-                    ))}
+                    {data?.rows.map(
+                        ({ id, name, streakcount, last_completed_at }) => (
+                            <StreakCard
+                                key={id}
+                                last_completed_at={last_completed_at}
+                                id={id}
+                                name={name}
+                                streakcount={streakcount}
+                                checked={false}
+                            />
+                        )
+                    )}
                 </div>
             </div>
             <AddDialog />

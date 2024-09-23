@@ -1,16 +1,15 @@
 "use client";
 
-import { ArrowRight, LoaderCircle, LoaderPinwheel } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import StreaksInfo from "./streaks-info-confirmation";
-import { useFormState } from "react-dom";
 import { addStreak } from "@/actions";
+import { useFormToast } from "@/hooks/use-form-toast";
+import { cn } from "@/lib/utils";
 import {
     EMPTY_ZOD_FORM_STATE,
     FormStatusTypes,
 } from "@/utils/form-state-handlers";
-import { useFormToast } from "@/hooks/use-form-toast";
-import { cn } from "@/lib/utils";
+import { ArrowRight, LoaderCircle } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useFormState } from "react-dom";
 
 export interface SliderButtonProps {
     id: string;
@@ -42,6 +41,7 @@ export default function SliderButton({
         }
         return false;
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleStart = (clientX: number) => {
         setIsDragging(true);
     };
@@ -102,7 +102,7 @@ export default function SliderButton({
             setDisableSlider(false);
             handleComplete();
         }
-    }, [formState.status, formState.timeStamp]);
+    }, [formState.status, formState.timeStamp, handleComplete]);
 
     useEffect(() => {
         const handleGlobalMouseUp = () => {
