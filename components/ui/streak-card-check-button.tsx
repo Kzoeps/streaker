@@ -1,13 +1,12 @@
 "use client";
 
-import { Check, Clock } from "lucide-react";
-import { StreakCardProps } from "./streak-card";
-import { useCallback, useState } from "react";
-import SliderButton from "./slider-button";
-import StreaksInfo from "./streaks-info-confirmation";
-import { Button } from "./button";
 import { cn } from "@/lib/utils";
-import { X } from "lucide-react";
+import { Check, ChevronRight, X } from "lucide-react";
+import { useCallback, useState } from "react";
+import { Button } from "./button";
+import SliderButton from "./slider-button";
+import { StreakCardProps } from "./streak-card";
+import StreaksInfo from "./streaks-info-confirmation";
 
 export interface StreakCardCheckButtonProps extends StreakCardProps {}
 
@@ -27,10 +26,16 @@ export const StreakCardCheckButton = ({
             <button
                 disabled={checked}
                 onClick={() => setShowConfirmation(true)}
-                className={cn(checked && "rounded-full bg-green-500 p-1")}
+                className={cn(
+                    "rounded-full p-1",
+                    checked && "bg-green-500",
+                    !checked && "border border-gray-300 bg-gray-50 shadow-xl drop-shadow-lg "
+                )}
             >
                 {checked && <Check className={"h-4 w-4 text-white"} />}
-                {!checked && <Clock className="h-5 w-5 text-orange-500" />}
+                {!checked && (
+                    <ChevronRight className="h-4 w-4 text-orange-500" />
+                )}
             </button>
             {showConfirmation && (
                 <>
