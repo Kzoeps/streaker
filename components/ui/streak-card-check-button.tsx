@@ -38,7 +38,7 @@ export const StreakCardCheckButton = ({
                 )}
             </button>
             {showConfirmation && (
-                <>
+                <div className="fixed inset-0 z-30">
                     <Button
                         onClick={() => setShowConfirmation(false)}
                         className="fixed right-0 top-2 z-30"
@@ -50,7 +50,7 @@ export const StreakCardCheckButton = ({
                         <StreaksInfo name={name} streakcount={streakcount} />
                     </div>
                     <SliderButton id={id} handleComplete={handleComplete} />
-                </>
+                </div>
             )}
         </>
     );
