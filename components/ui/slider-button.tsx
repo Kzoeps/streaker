@@ -46,23 +46,26 @@ export default function SliderButton({
         setIsDragging(true);
     };
 
-    const handleMove = (clientX: number) => {
-        if (!isDragging) return;
-        const slider = sliderRef.current;
-        const button = buttonRef.current;
-        if (slider && button && !disableSlider) {
-            const sliderRect = slider.getBoundingClientRect();
-            const buttonWidth = button.offsetWidth;
-            const newPosition = Math.max(
-                0,
-                Math.min(
-                    clientX - sliderRect.left - buttonWidth / 2,
-                    sliderRect.width - buttonWidth - 8
-                )
-            );
-            setSliderPosition(newPosition);
-        }
-    };
+    const handleMove = useCallback(
+        (clientX: number) => {
+            if (!isDragging) return;
+            const slider = sliderRef.current;
+            const button = buttonRef.current;
+            if (slider && button && !disableSlider) {
+                const sliderRect = slider.getBoundingClientRect();
+                const buttonWidth = button.offsetWidth;
+                const newPosition = Math.max(
+                    0,
+                    Math.min(
+                        clientX - sliderRect.left - buttonWidth / 2,
+                        sliderRect.width - buttonWidth - 8
+                    )
+                );
+                setSliderPosition(newPosition);
+            }
+        },
+        [isDragging, disableSlider]
+    );
 
     const handleEnd = useCallback(async () => {
         setIsDragging(false);
@@ -90,8 +93,6 @@ export default function SliderButton({
 
     // Mouse event handlers
     const handleMouseDown = (e: React.MouseEvent) => handleStart(e.clientX);
-    const handleMouseMove = (e: React.MouseEvent) => handleMove(e.clientX);
-    const handleMouseUp = () => handleEnd();
 
     useEffect(() => {
         if (formState.status === FormStatusTypes.ERROR) {
@@ -105,16 +106,21 @@ export default function SliderButton({
     }, [formState.status, formState.timeStamp, handleComplete]);
 
     useEffect(() => {
+        const handleGlobalMouseMove = (e: MouseEvent) => {
+            handleMove(e.clientX);
+        };
         const handleGlobalMouseUp = () => {
             if (isDragging) {
                 handleEnd();
             }
         };
+        document.addEventListener("mousemove", handleGlobalMouseMove);
         document.addEventListener("mouseup", handleGlobalMouseUp);
         return () => {
             document.removeEventListener("mouseup", handleGlobalMouseUp);
+            document.removeEventListener("mousemove", handleGlobalMouseMove);
         };
-    }, [isDragging, handleEnd]);
+    }, [isDragging, handleEnd, handleMove]);
 
     return (
         <>
@@ -145,7 +151,10 @@ export default function SliderButton({
                             }}
                         />
                         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                            <span className="font-semibold text-orange-500">
+                            <span
+                                draggable="false"
+                                className="font-semibold text-orange-500"
+                            >
                                 Confirm Completion
                             </span>
                         </div>
@@ -154,9 +163,6 @@ export default function SliderButton({
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
                             onMouseDown={handleMouseDown}
-                            onMouseMove={handleMouseMove}
-                            onMouseUp={handleMouseUp}
-                            onMouseLeave={handleMouseUp}
                             ref={buttonRef}
                             className={cn(
                                 "absolute z-20 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 ease-out"
