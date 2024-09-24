@@ -25,7 +25,9 @@ export default function StreakCard({
         <>
             <Card key={id} className="relative">
                 <CardHeader className="pb-2">
-                    <CardTitle>{toTitleCase(name)}</CardTitle>
+                    <CardTitle className="h-9 overflow-hidden text-ellipsis">
+                        {toTitleCase(name)}
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="flex items-center justify-between">
