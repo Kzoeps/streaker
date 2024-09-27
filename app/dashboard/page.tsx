@@ -14,6 +14,7 @@ export default async function Dashboard() {
     const { userId } = auth();
     const data =
         await sql<Streak>`SELECT * FROM Streaks WHERE userId = ${userId}`;
+    console.log(data.rows[0]?.last_completed_at);
     if (data.rowCount === 0) {
         return <NoStreaks />;
     }
