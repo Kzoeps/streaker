@@ -64,18 +64,17 @@
 "use client";
 
 import { Streak } from "@/actions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { isValidUpdate } from "@/utils/misc-utils";
 import dayjs from "dayjs";
 import { Flame, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSwipeable } from "react-swipeable";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { StreakCardCheckButton } from "./streak-card-check-button";
-import { cn } from "@/lib/utils";
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
-    onDelete: (id: string) => void;
 }
 
 function toTitleCase(str: string): string {
@@ -90,7 +89,6 @@ export default function StreakCard({
     name,
     streakcount,
     last_completed_at,
-    onDelete,
 }: StreakCardProps) {
     const [offset, setOffset] = useState(0);
     const today = dayjs();
@@ -99,11 +97,12 @@ export default function StreakCard({
     const handlers = useSwipeable({
         onSwiping: (event) => {
             if (event.deltaX < 0) {
-                setOffset(Math.max(-100, event.deltaX));
+                setOffset(Math.max(-150, event.deltaX));
             }
         },
         onSwipedLeft: () => {
             if (offset > -100) setOffset(0);
+            if (offset < -100) console.log("DELETE SHOW");
         },
         onSwipedRight: () => {
             setOffset(0);
@@ -158,20 +157,12 @@ export default function StreakCard({
                                 last_completed_at={last_completed_at}
                                 streakcount={streakcount}
                                 id={id}
-                                onDelete={onDelete}
                                 checked={!isValidUpdate(today, lastCompleted)}
                             />
                         </div>
                     </CardContent>
                 </Card>
             </div>
-            {offset === -100 && (
-                <button
-                    className="absolute inset-0 z-10"
-                    onClick={() => onDelete(id)}
-                    aria-label="Delete streak"
-                />
-            )}
         </div>
     );
 }
