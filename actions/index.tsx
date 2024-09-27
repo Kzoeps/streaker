@@ -85,3 +85,28 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
         return fromErrorToFormState(e);
     }
 }
+
+const deleteStreakSchema = z.object({
+    id: z.string().trim().min(10),
+});
+
+export async function deleteStreak(
+    formState: ZodFormState,
+    formData: FormData
+) {
+    try {
+        const { userId } = auth();
+        const payload = deleteStreakSchema.parse({
+            id: formData.get("id"),
+        });
+        await sql`DELETE FROM Streaks WHERE id = ${payload.id} AND userId = ${userId}`;
+        revalidatePath("/dashboard");
+        return {
+            status: FormStatusTypes.SUCCESS,
+            message: "Successfully deleted streak",
+            timeStamp: Date.now(),
+        };
+    } catch (e) {
+        return fromErrorToFormState(e);
+    }
+}

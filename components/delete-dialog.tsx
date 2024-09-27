@@ -11,6 +11,10 @@ import {
 } from "./ui/dialog";
 
 import { SubmitButton } from "./submit-button";
+import { useFormState } from "react-dom";
+import { deleteStreak } from "@/actions";
+import { EMPTY_ZOD_FORM_STATE } from "@/utils/form-state-handlers";
+import { useFormToast } from "@/hooks/use-form-toast";
 
 export interface DeleteDialogProps {
     streakerId: string;
@@ -22,6 +26,15 @@ export const DeleteDialog = ({
     setIsOpen,
     streakerId,
 }: DeleteDialogProps) => {
+    const [formState, action] = useFormState(
+        deleteStreak,
+        EMPTY_ZOD_FORM_STATE
+    );
+    useFormToast(formState, {
+        successCallback: () => {
+            setIsOpen(false);
+        },
+    });
     if (!isOpen) {
         return undefined;
     }
@@ -36,10 +49,10 @@ export const DeleteDialog = ({
                             Are you sure you want to delete this streaker
                         </DialogDescription>
                     </DialogHeader>
-                    <form id="deleteForm">
+                    <form id="deleteForm" action={action}>
                         <input
                             type="hidden"
-                            name="streakerId"
+                            name="id"
                             value={streakerId}
                             readOnly
                         />
