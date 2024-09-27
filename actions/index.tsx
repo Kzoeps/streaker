@@ -66,7 +66,6 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
         if (streakData.rowCount) {
             const data = streakData.rows[0];
             const today = dayjs().utc();
-            console.log(today.format());
             const last_completed_at = dayjs(data.last_completed_at);
             if (!isValidUpdate(today, last_completed_at)) {
                 throw new Error("Already updated streak for today");

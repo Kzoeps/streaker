@@ -2,12 +2,9 @@ import { Streak } from "@/actions";
 import { isValidUpdate } from "@/utils/misc-utils";
 import { toTitleCase } from "@/lib/utils";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import { Flame } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
 import { StreakCardCheckButton } from "./streak-card-check-button";
-
-dayjs.extend(utc);
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
@@ -19,7 +16,7 @@ export default function StreakCard({
     streakcount,
     last_completed_at,
 }: StreakCardProps) {
-    const today = dayjs().utc();
+    const today = dayjs();
     const lastCompleted = dayjs(last_completed_at);
     return (
         <>
