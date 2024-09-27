@@ -6,7 +6,7 @@ dayjs.extend(utc);
 export async function POST() {
     const id = "01ee322c-7086-492f-b066-5abbbc99175c";
     const data =
-        await sql<Streak>`SELECT streakcount FROM Streaks WHERE id = ${id}`;
+        await sql<Streak>`SELECT streakcount, last_completed_at FROM Streaks WHERE id = ${id}`;
     const streakcount = data.rows[0]?.streakcount ?? 0;
     console.log(data.rows[0].last_completed_at, "raw last complteeded at");
     const lastCompletedAt = dayjs(data.rows[0]?.last_completed_at);
