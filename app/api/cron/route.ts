@@ -6,15 +6,13 @@ dayjs.extend(utc);
 export async function POST() {
     const data =
         await sql<Streak>`SELECT id, streakcount, last_completed_at FROM Streaks`;
-    data.rows.forEach(async ({ id, streakcount, last_completed_at }) => {
+    for (const { id, streakcount, last_completed_at } of data.rows) {
         const today = dayjs();
         const lastCompletedAt = dayjs(last_completed_at);
-        console.log(today.format());
-        console.log(lastCompletedAt.format());
         if (today.diff(lastCompletedAt, "m") > 2 && streakcount !== 0) {
-            console.log("reset"!)
+            console.log("reset"!);
             await sql<Streak>`UPDATE Streaks SET streakcount = ${0} WHERE id = ${id}`;
         }
-    });
+    }
     return new Response("OK", { status: 200 });
 }
