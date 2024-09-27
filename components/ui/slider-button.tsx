@@ -123,7 +123,7 @@ export default function SliderButton({
     }, [isDragging, handleEnd, handleMove]);
 
     return (
-        <>
+        <div className="absolute">
             <form ref={formRef} action={action}>
                 <input
                     required
@@ -184,6 +184,6 @@ export default function SliderButton({
                     </div>
                 </div>
             </form>
-        </>
+        </div>
     );
 }

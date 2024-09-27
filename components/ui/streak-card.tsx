@@ -59,7 +59,7 @@ export default function StreakCard({
     };
 
     return (
-        <>
+        <div className="">
             <div className="relative overflow-hidden" {...handlers}>
                 <div
                     className={cn(
@@ -69,51 +69,49 @@ export default function StreakCard({
                 >
                     <Trash2 className="h-6 w-6 text-white" />
                 </div>
-                <div
+
+                <Card
+                    className=""
                     style={{
                         transform: `translateX(${offset}px)`,
                         transition: "transform 0.3s ease-out",
                     }}
                 >
-                    <Card className="relative">
-                        <CardHeader className="pb-2">
-                            <CardTitle className="h-9 overflow-hidden text-ellipsis">
-                                {toTitleCase(name)}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center space-x-1">
-                                    <Flame
-                                        className={`h-5 w-5 ${
-                                            streakcount > 0
-                                                ? "text-orange-500"
-                                                : "text-gray-300"
-                                        }`}
-                                    />
-                                    <span
-                                        className={`${
-                                            streakcount > 0
-                                                ? "text-orange-500"
-                                                : "text-gray-300"
-                                        }`}
-                                    >
-                                        {streakcount}
-                                    </span>
-                                </div>
-                                <StreakCardCheckButton
-                                    name={name}
-                                    last_completed_at={last_completed_at}
-                                    streakcount={streakcount}
-                                    id={id}
-                                    checked={
-                                        !isValidUpdate(today, lastCompleted)
-                                    }
+                    <CardHeader className="pb-2">
+                        <CardTitle className="h-9 overflow-hidden text-ellipsis">
+                            {toTitleCase(name)}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-1">
+                                <Flame
+                                    className={`h-5 w-5 ${
+                                        streakcount > 0
+                                            ? "text-orange-500"
+                                            : "text-gray-300"
+                                    }`}
                                 />
+                                <span
+                                    className={`${
+                                        streakcount > 0
+                                            ? "text-orange-500"
+                                            : "text-gray-300"
+                                    }`}
+                                >
+                                    {streakcount}
+                                </span>
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                            <StreakCardCheckButton
+                                name={name}
+                                last_completed_at={last_completed_at}
+                                streakcount={streakcount}
+                                id={id}
+                                checked={!isValidUpdate(today, lastCompleted)}
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
             {showDelete && (
                 <DeleteDialog
@@ -122,6 +120,6 @@ export default function StreakCard({
                     setIsOpen={handleDeleteDialogClose}
                 />
             )}
-        </>
+        </div>
     );
 }

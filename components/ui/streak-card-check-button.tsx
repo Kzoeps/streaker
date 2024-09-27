@@ -29,7 +29,8 @@ export const StreakCardCheckButton = ({
                 className={cn(
                     "rounded-full p-1",
                     checked && "bg-green-500",
-                    !checked && "border border-gray-300 bg-gray-50 shadow-xl drop-shadow-lg "
+                    !checked &&
+                        "border border-gray-300 bg-gray-50 shadow-xl drop-shadow-lg"
                 )}
             >
                 {checked && <Check className={"h-4 w-4 text-white"} />}
@@ -38,7 +39,7 @@ export const StreakCardCheckButton = ({
                 )}
             </button>
             {showConfirmation && (
-                <div className="fixed inset-0 z-30">
+                <div className="absolute inset-0 z-30">
                     <Button
                         onClick={() => setShowConfirmation(false)}
                         className="fixed right-0 top-2 z-30"
