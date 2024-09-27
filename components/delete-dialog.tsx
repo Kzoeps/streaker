@@ -12,23 +12,16 @@ import {
 
 import { SubmitButton } from "./submit-button";
 
-export interface AddFormProps {
+export interface DeleteDialogProps {
+    streakerId: string;
     isOpen: boolean;
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
-export const DeleteDialog = ({ isOpen, setIsOpen }: AddFormProps) => {
-    // const [formState, action] = useFormState(createStreak, {
-    //     status: FormStatusTypes.NA,
-    //     message: null,
-    //     timeStamp: Date.now(),
-    // });
-    // useFormToast(formState);
-
-    // useEffect(() => {
-    //     if (formState.status === FormStatusTypes.SUCCESS) {
-    //         setIsOpen(false);
-    //     }
-    // }, [formState.timeStamp, setIsOpen, formState.status]);
+export const DeleteDialog = ({
+    isOpen,
+    setIsOpen,
+    streakerId,
+}: DeleteDialogProps) => {
     if (!isOpen) {
         return undefined;
     }
@@ -44,8 +37,12 @@ export const DeleteDialog = ({ isOpen, setIsOpen }: AddFormProps) => {
                         </DialogDescription>
                     </DialogHeader>
                     <form id="deleteForm">
-                        {/* for on enter */}
-                        <input type="submit" className="hidden" />
+                        <input
+                            type="hidden"
+                            name="streakerId"
+                            value={streakerId}
+                            readOnly
+                        />
                         <DialogFooter className="flex flex-row justify-end gap-4">
                             <Button
                                 variant="outline"
