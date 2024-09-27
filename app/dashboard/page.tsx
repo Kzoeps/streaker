@@ -5,6 +5,10 @@ import AddDialog from "@/components/ui/add-dialog";
 import StreakCard from "@/components/ui/streak-card";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc);
 
 export default async function Dashboard() {
     const { userId } = auth();

@@ -66,13 +66,14 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
         if (streakData.rowCount) {
             const data = streakData.rows[0];
             const today = dayjs().utc();
+            console.log(today.format());
             const last_completed_at = dayjs(data.last_completed_at);
             if (!isValidUpdate(today, last_completed_at)) {
                 throw new Error("Already updated streak for today");
             }
             const updatedStreakCount =
                 (streakData.rows[0].streakcount ?? 0) + 1;
-            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = ${today.toDate().toISOString()} WHERE id = ${payload.id} AND userId = ${userId}`;
+            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = ${today.format()} WHERE id = ${payload.id} AND userId = ${userId}`;
             revalidatePath("/dashboard");
             return {
                 status: FormStatusTypes.SUCCESS,

@@ -10,6 +10,8 @@ export async function POST() {
     const streakcount = data.rows[0]?.streakcount ?? 0;
     const lastCompletedAt = dayjs(data.rows[0]?.last_completed_at);
     const today = dayjs().utc();
+    console.log(today.format(), "today");
+    console.log(lastCompletedAt.format());
     if (!lastCompletedAt.isValid()) {
         return new Response("OK", { status: 200 });
     }
