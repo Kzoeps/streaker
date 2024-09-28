@@ -3,13 +3,16 @@
 import { Streak } from "@/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { isValidUpdate } from "@/utils/misc-utils";
+import { hasAlreadyUpdatedToday } from "@/utils/misc-utils";
 import dayjs from "dayjs";
-import { Flame, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { CheckCheck, Flame, Trash2, X } from "lucide-react";
+import { useCallback, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { StreakCardCheckButton } from "./streak-card-check-button";
 import { DeleteDialog } from "../delete-dialog";
+import { Button } from "./button";
+import SliderButton from "./slider-button";
+import StreaksInfo from "./streaks-info-confirmation";
 
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
@@ -30,25 +33,36 @@ export default function StreakCard({
 }: StreakCardProps) {
     const [offset, setOffset] = useState(0);
     const [showDelete, setShowDelete] = useState(false);
+    const [showComplete, setShowComplete] = useState(false);
     const today = dayjs();
     const lastCompleted = dayjs(last_completed_at);
 
     const handlers = useSwipeable({
         onSwiping: (event) => {
-            if (event.deltaX < 0) {
+            if (
+                event.deltaX < 0 &&
+                !hasAlreadyUpdatedToday(today, lastCompleted)
+            ) {
                 setOffset(Math.max(-150, event.deltaX));
+            } else if (event.deltaX > 0) {
+                setOffset(Math.min(150, event.deltaX));
             }
         },
         onSwipedLeft: () => {
             if (offset > -100) setOffset(0);
             if (offset < -100) {
                 setTimeout(() => {
-                    if (offset < -100) setShowDelete(true);
+                    if (offset < -100) setShowComplete(true);
                 }, 250);
             }
         },
         onSwipedRight: () => {
-            setOffset(0);
+            if (offset < 100) setOffset(0);
+            if (offset > 100) {
+                setTimeout(() => {
+                    if (offset > 100) setShowDelete(true);
+                }, 250);
+            }
         },
         trackMouse: true,
     });
@@ -58,20 +72,29 @@ export default function StreakCard({
         setOffset(0);
     };
 
+    const handleCompleteDialogClose = useCallback(() => {
+        setShowComplete(false);
+        setOffset(0);
+    }, []);
+
     return (
         <div className="">
             <div className="relative overflow-hidden" {...handlers}>
                 <div
                     className={cn(
-                        "absolute inset-0 box-border flex items-center justify-end rounded-xl border bg-red-400 px-4"
+                        "absolute inset-0 box-border flex items-center rounded-xl border bg-green-400 px-4",
+                        offset < 0
+                            ? "justify-end bg-green-400"
+                            : "justify-start bg-red-500"
                     )}
                     aria-hidden="true"
                 >
-                    <Trash2 className="h-6 w-6 text-white" />
+                    {offset < 0 && (
+                        <CheckCheck className="h-6 w-6 text-white" />
+                    )}
+                    {offset > 0 && <Trash2 className="h-6 w-6 text-white" />}
                 </div>
-
                 <Card
-                    className=""
                     style={{
                         transform: `translateX(${offset}px)`,
                         transition: "transform 0.3s ease-out",
@@ -107,7 +130,10 @@ export default function StreakCard({
                                 last_completed_at={last_completed_at}
                                 streakcount={streakcount}
                                 id={id}
-                                checked={!isValidUpdate(today, lastCompleted)}
+                                checked={hasAlreadyUpdatedToday(
+                                    today,
+                                    lastCompleted
+                                )}
                             />
                         </div>
                     </CardContent>
@@ -119,6 +145,24 @@ export default function StreakCard({
                     isOpen={showDelete}
                     setIsOpen={handleDeleteDialogClose}
                 />
+            )}
+            {showComplete && (
+                <div className="fixed inset-0 z-[50]">
+                    <Button
+                        onClick={handleCompleteDialogClose}
+                        className="fixed right-0 top-2 z-30"
+                        variant={"ghost"}
+                    >
+                        <X />
+                    </Button>
+                    <div className="fixed inset-0 top-1/3 z-30 max-h-48">
+                        <StreaksInfo name={name} streakcount={streakcount} />
+                    </div>
+                    <SliderButton
+                        id={id}
+                        handleComplete={handleCompleteDialogClose}
+                    />
+                </div>
             )}
         </div>
     );

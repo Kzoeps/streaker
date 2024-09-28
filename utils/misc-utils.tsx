@@ -1,5 +1,5 @@
 import type { Dayjs } from "dayjs";
-export const isValidUpdate = (today: Dayjs, lastCompleted: Dayjs) => {
-    if (!lastCompleted.isValid()) return true;
-    return today.diff(lastCompleted, "h") > 24;
+export const hasAlreadyUpdatedToday = (today: Dayjs, lastCompleted: Dayjs) => {
+    if (!lastCompleted.isValid()) return false;
+    return today.diff(lastCompleted, "h") < 24;
 };

@@ -4,7 +4,7 @@ import {
     fromErrorToFormState,
     ZodFormState,
 } from "@/utils/form-state-handlers";
-import { isValidUpdate } from "@/utils/misc-utils";
+import { hasAlreadyUpdatedToday } from "@/utils/misc-utils";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
 import dayjs from "dayjs";
@@ -67,7 +67,7 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
             const data = streakData.rows[0];
             const today = dayjs().utc();
             const last_completed_at = dayjs(data.last_completed_at);
-            if (!isValidUpdate(today, last_completed_at)) {
+            if (hasAlreadyUpdatedToday(today, last_completed_at)) {
                 throw new Error("Already updated streak for today");
             }
             const updatedStreakCount =
