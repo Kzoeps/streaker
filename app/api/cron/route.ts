@@ -4,8 +4,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 dayjs.extend(utc);
 export async function POST(req: Request) {
-    console.log(req.headers.get("Authorization"));
-    if (process.env.CRON_SECRET === req.headers.get("Authorization")) {
+    if (process.env.CRON_SECRET !== req.headers.get("Authorization")) {
         return new Response("Unauthorized motherfucker!", { status: 401 });
     }
     const data =
