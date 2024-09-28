@@ -50,7 +50,7 @@ export default function StreakCard({
         },
         onSwipedLeft: () => {
             if (offset > -100) setOffset(0);
-            if (offset < -100) {
+            if (offset <= -100) {
                 setTimeout(() => {
                     if (offset < -100) setShowComplete(true);
                 }, 250);
@@ -58,7 +58,7 @@ export default function StreakCard({
         },
         onSwipedRight: () => {
             if (offset < 100) setOffset(0);
-            if (offset > 100) {
+            if (offset >= 100) {
                 setTimeout(() => {
                     if (offset > 100) setShowDelete(true);
                 }, 250);
