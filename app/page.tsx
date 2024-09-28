@@ -4,24 +4,26 @@ import Link from "next/link";
 
 export default function LandingPage() {
     return (
-        <div className="flex min-h-screen flex-col">
-            <header className="flex h-14 items-center px-4 lg:px-6">
-                <Link className="flex items-center justify-center" href="#">
-                    <Zap className="h-6 w-6 text-orange-500" />
-                    <span className="sr-only">Streaker</span>
-                </Link>
-                <nav className="ml-auto flex gap-4 sm:gap-6">
-                    <Link
-                        className="text-sm font-medium underline-offset-4 hover:underline"
-                        href="/sign-in"
-                    >
-                        Login
+        <div className="flex min-h-screen w-full flex-col items-center">
+            <header className="flex h-14 w-full items-center justify-center px-4 lg:px-6">
+                <div className="flex w-full max-w-[1440px] justify-between">
+                    <Link className="flex items-center justify-center" href="#">
+                        <Zap className="h-6 w-6 text-orange-500" />
+                        <span className="sr-only">Streaker</span>
                     </Link>
-                </nav>
+                    <nav className="ml-auto flex gap-4 sm:gap-6">
+                        <Link
+                            className="text-sm font-medium underline-offset-4 hover:underline"
+                            href="/sign-in"
+                        >
+                            Login
+                        </Link>
+                    </nav>
+                </div>
             </header>
-            <main className="flex-1">
-                <section className="w-full bg-orange-500 py-12 md:py-24 lg:py-32 xl:py-48">
-                    <div className="container px-4 md:px-6">
+            <main className="flex w-full flex-col justify-center">
+                <section className="bg-orange-500 py-12 md:py-24 lg:py-32 xl:py-48">
+                    <div className="container mx-auto px-4 md:px-6">
                         <div className="flex flex-col items-center space-y-4 text-center">
                             <div className="space-y-2">
                                 <h1 className="text-3xl font-bold tracking-tighter text-white sm:text-4xl md:text-5xl lg:text-6xl/none">
@@ -29,7 +31,7 @@ export default function LandingPage() {
                                 </h1>
                                 <p className="mx-auto max-w-[700px] text-white md:text-xl">
                                     Streaker helps you create and maintain daily
-                                    habits. Don't break the chain!
+                                    habits. Don&apos;t break the chain!
                                 </p>
                             </div>
                             <div className="space-x-4">
@@ -46,7 +48,7 @@ export default function LandingPage() {
                     id="features"
                     className="w-full bg-white py-12 md:py-24 lg:py-32"
                 >
-                    <div className="container px-4 md:px-6">
+                    <div className="container mx-auto px-4 md:px-6">
                         <h2 className="mb-12 text-center text-3xl font-bold tracking-tighter text-orange-500 sm:text-5xl">
                             Features
                         </h2>
@@ -203,10 +205,10 @@ export default function LandingPage() {
                     </div>
                 </section> */}
                 <section className="w-full bg-orange-500 py-12 md:py-24 lg:py-32">
-                    <div className="container px-4 md:px-6">
+                    <div className="container mx-auto px-4 md:px-6">
                         <div className="flex flex-col items-center space-y-4 text-center">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter text-white sm:text-4xl md:text-5xl">
+                                <h2 className="mb-4 text-3xl font-bold tracking-tighter text-white sm:text-4xl md:text-5xl">
                                     Start Your Streak Today
                                 </h2>
                                 <Link href={"/sign-up"}>
