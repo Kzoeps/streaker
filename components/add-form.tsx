@@ -43,7 +43,7 @@ export const AddForm = ({ isOpen, setIsOpen }: AddFormProps) => {
         <div className="relative">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <div className="fixed inset-0 bg-black opacity-30"></div>
-                <DialogContent className="fixed w-full max-w-xs rounded-lg bg-white p-6 sm:max-w-sm">
+                <DialogContent className="fixed top-1/4 w-full max-w-xs rounded-lg bg-white p-6 sm:max-w-sm">
                     <DialogHeader className="flex justify-start text-left">
                         <DialogTitle>New Streaker</DialogTitle>
                         <DialogDescription className="sr-only">
