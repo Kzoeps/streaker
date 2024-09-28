@@ -72,7 +72,7 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
             }
             const updatedStreakCount =
                 (streakData.rows[0].streakcount ?? 0) + 1;
-            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = ${today.format()} WHERE id = ${payload.id} AND userId = ${userId}`;
+            await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = NOW() AT TIME ZONE 'UTC' WHERE id = ${payload.id} AND userId = ${userId}`;
             revalidatePath("/dashboard");
             return {
                 status: FormStatusTypes.SUCCESS,

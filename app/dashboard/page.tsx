@@ -3,10 +3,11 @@ import NoStreaks from "@/app/dashboard/splash-no-streaks";
 import AddDialog from "@/components/ui/add-dialog";
 // import SliderButton from "@/components/ui/slider-button";
 import StreakCard from "@/components/ui/streak-card";
-import { auth } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import UpdateTimezone from "./update-timezone";
 
 dayjs.extend(utc);
 
@@ -36,7 +37,7 @@ export default async function Dashboard() {
                 </div>
             </div>
             <AddDialog />
-            {/* <SliderButton /> */}
+            <UpdateTimezone />
         </div>
     );
 }

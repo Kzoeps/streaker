@@ -7,6 +7,10 @@ const isPublicRoute = createRouteMatcher([
     "/api/cron",
 ]);
 
+const handleTimeZone = () => {
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+};
+
 export default clerkMiddleware((auth, request) => {
     if (!isPublicRoute(request)) {
         auth().protect();
