@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ArrowLeftFromLine, Check, ChevronRight } from "lucide-react";
+import { ArrowLeftFromLine, Check } from "lucide-react";
 import { StreakCardProps } from "./streak-card";
 
 export interface StreakCardCheckButtonProps extends StreakCardProps {}
