@@ -65,6 +65,15 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
             await sql<Streak>`SELECT streakcount, last_completed_at FROM Streaks WHERE userId = ${userId} AND id = ${payload.id}`;
         if (streakData.rowCount) {
             const data = streakData.rows[0];
+            console.log(dayjs.utc(), "today on server time on server");
+            console.log(
+                data.last_completed_at,
+                "data.last_completed_at on server "
+            );
+            console.log(
+                dayjs(data.last_completed_at),
+                "dayjs last completed on server"
+            );
             const today = dayjs().utc();
             const last_completed_at = dayjs(data.last_completed_at);
             if (hasAlreadyUpdatedToday(today, last_completed_at)) {
