@@ -2,7 +2,7 @@
 
 import { Streak } from "@/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn, toTitleCase } from "@/lib/utils";
 import { hasAlreadyUpdatedToday } from "@/utils/misc-utils";
 import dayjs from "dayjs";
 import { CheckCheck, Flame, Trash2, X } from "lucide-react";
@@ -18,13 +18,6 @@ export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
 }
 
-function toTitleCase(str: string): string {
-    return str.replace(
-        /\w\S*/g,
-        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-    );
-}
-
 export default function StreakCard({
     id,
     name,
@@ -36,6 +29,7 @@ export default function StreakCard({
     const [showComplete, setShowComplete] = useState(false);
     const today = dayjs();
     const lastCompleted = dayjs(last_completed_at);
+    console.log(last_completed_at);
 
     const handlers = useSwipeable({
         onSwiping: (event) => {
