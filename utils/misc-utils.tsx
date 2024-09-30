@@ -3,6 +3,20 @@ import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
 dayjs.extend(timezone);
 
+export const getDaysDifference = (
+    today: Dayjs,
+    lastCompleted: Dayjs,
+    timezone?: string
+) => {
+    if (!lastCompleted.isValid()) return 0;
+    if (timezone) {
+        const lastCompletedInUserTimezone = lastCompleted.tz(timezone);
+        const todayInUserTimezone = today.tz(timezone);
+        return todayInUserTimezone.diff(lastCompletedInUserTimezone, "d");
+    }
+    return today.diff(lastCompleted, "d");
+};
+
 /**
  *
  * @param today today in UTC
@@ -16,12 +30,8 @@ export const hasAlreadyUpdatedToday = (
     timezone?: string
 ) => {
     if (!lastCompleted.isValid()) return false;
-    if (timezone) {
-        const lastCompletedInUserTimezone = lastCompleted.tz(timezone);
-        const todayInUserTimezone = today.tz(timezone);
-        return todayInUserTimezone.diff(lastCompletedInUserTimezone, "d") < 1;
-    }
-    return today.diff(lastCompleted, "d") < 1;
+    const difference = getDaysDifference(today, lastCompleted, timezone);
+    return difference < 1;
 };
 
 export const getStreakCount = (
@@ -31,16 +41,8 @@ export const getStreakCount = (
     timezone?: string
 ) => {
     if (!lastCompleted.isValid()) return 0;
-    if (timezone) {
-        const lastCompletedInUserTimezone = lastCompleted.tz(timezone);
-        const todayInUserTimezone = today.tz(timezone);
-        if (todayInUserTimezone.diff(lastCompletedInUserTimezone, "d") > 2) {
-            return 0;
-        } else {
-            return currentStreakCount ?? 0;
-        }
-    }
-    if (today.diff(lastCompleted, "d") > 2) {
+    const difference = getDaysDifference(today, lastCompleted, timezone);
+    if (difference > 2) {
         return 0;
     } else {
         return currentStreakCount ?? 0;
