@@ -10,11 +10,13 @@ export const getDaysDifference = (
 ) => {
     if (!lastCompleted.isValid()) return 0;
     if (timezone) {
-        const lastCompletedInUserTimezone = lastCompleted.tz(timezone);
-        const todayInUserTimezone = today.tz(timezone);
+        const lastCompletedInUserTimezone = lastCompleted
+            .tz(timezone)
+            .startOf("day");
+        const todayInUserTimezone = today.tz(timezone).startOf("day");
         return todayInUserTimezone.diff(lastCompletedInUserTimezone, "d");
     }
-    return today.diff(lastCompleted, "d");
+    return today.startOf("day").diff(lastCompleted.startOf("day"), "d");
 };
 
 /**
