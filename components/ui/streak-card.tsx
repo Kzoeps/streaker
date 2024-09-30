@@ -17,7 +17,7 @@ import StreaksInfo from "./streaks-info-confirmation";
 
 dayjs.extend(utc);
 
-export interface StreakCardProps extends Omit<Streak, "userId"> {
+export interface StreakCardProps extends Omit<Streak, "userid"> {
     checked: boolean;
     timezone?: string;
 }
