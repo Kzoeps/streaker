@@ -13,7 +13,7 @@ dayjs.extend(utc);
 export default async function Dashboard() {
     const { userId, sessionClaims } = auth();
     const data =
-        await sql<Streak>`SELECT *, last_completed_at FROM Streaks WHERE userId = ${userId}`;
+        await sql<Streak>`SELECT *, last_completed_at FROM Streaks WHERE userId = ${userId} ORDER BY created_at DESC`;
     if (data.rowCount === 0) {
         return <NoStreaks />;
     }
