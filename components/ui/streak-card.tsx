@@ -45,7 +45,7 @@ export default function StreakCard({
         onSwiping: (event) => {
             if (
                 event.deltaX < 0 &&
-                !hasAlreadyUpdatedToday(today, lastCompleted)
+                !hasAlreadyUpdatedToday(today, lastCompleted, timezone)
             ) {
                 setOffset(Math.max(-150, event.deltaX));
             } else if (event.deltaX > 0) {
