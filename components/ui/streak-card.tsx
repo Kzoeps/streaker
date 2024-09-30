@@ -3,8 +3,9 @@
 import { Streak } from "@/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, toTitleCase } from "@/lib/utils";
-import { hasAlreadyUpdatedToday } from "@/utils/misc-utils";
+import { getStreakCount, hasAlreadyUpdatedToday } from "@/utils/misc-utils";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { CheckCheck, Flame, Trash2, X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { useSwipeable } from "react-swipeable";
@@ -14,8 +15,11 @@ import { Button } from "./button";
 import SliderButton from "./slider-button";
 import StreaksInfo from "./streaks-info-confirmation";
 
+dayjs.extend(utc);
+
 export interface StreakCardProps extends Omit<Streak, "userId"> {
     checked: boolean;
+    timezone?: string;
 }
 
 export default function StreakCard({
@@ -23,13 +27,19 @@ export default function StreakCard({
     name,
     streakcount,
     last_completed_at,
+    timezone,
 }: StreakCardProps) {
     const [offset, setOffset] = useState(0);
     const [showDelete, setShowDelete] = useState(false);
     const [showComplete, setShowComplete] = useState(false);
-    const today = dayjs();
-    const lastCompleted = dayjs(last_completed_at);
-    console.log(last_completed_at);
+    const today = dayjs().utc();
+    const lastCompleted = dayjs(last_completed_at).utc();
+    const streakCountForDisplay = getStreakCount(
+        today,
+        lastCompleted,
+        streakcount,
+        timezone
+    );
 
     const handlers = useSwipeable({
         onSwiping: (event) => {
@@ -104,29 +114,26 @@ export default function StreakCard({
                             <div className="flex items-center space-x-1">
                                 <Flame
                                     className={`h-5 w-5 ${
-                                        streakcount > 0
+                                        streakCountForDisplay > 0
                                             ? "text-orange-500"
                                             : "text-gray-300"
                                     }`}
                                 />
                                 <span
                                     className={`${
-                                        streakcount > 0
+                                        streakCountForDisplay > 0
                                             ? "text-orange-500"
                                             : "text-gray-300"
                                     }`}
                                 >
-                                    {streakcount}
+                                    {streakCountForDisplay}
                                 </span>
                             </div>
                             <StreakCardCheckButton
-                                name={name}
-                                last_completed_at={last_completed_at}
-                                streakcount={streakcount}
-                                id={id}
                                 checked={hasAlreadyUpdatedToday(
                                     today,
-                                    lastCompleted
+                                    lastCompleted,
+                                    timezone
                                 )}
                             />
                         </div>
@@ -150,7 +157,10 @@ export default function StreakCard({
                         <X />
                     </Button>
                     <div className="fixed inset-0 top-1/3 z-30 max-h-48">
-                        <StreaksInfo name={name} streakcount={streakcount} />
+                        <StreaksInfo
+                            name={name}
+                            streakcount={streakCountForDisplay}
+                        />
                     </div>
                     <SliderButton
                         id={id}

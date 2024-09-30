@@ -4,7 +4,7 @@ import {
     fromErrorToFormState,
     ZodFormState,
 } from "@/utils/form-state-handlers";
-import { hasAlreadyUpdatedToday } from "@/utils/misc-utils";
+import { getStreakCount, hasAlreadyUpdatedToday } from "@/utils/misc-utils";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
 import dayjs from "dayjs";
@@ -57,7 +57,7 @@ const IncreaseStreakSchema = z.object({
 
 export async function addStreak(formState: ZodFormState, formData: FormData) {
     try {
-        const { userId } = auth();
+        const { userId, sessionClaims } = auth();
         const payload = IncreaseStreakSchema.parse({
             id: formData.get("id"),
         });
@@ -65,22 +65,24 @@ export async function addStreak(formState: ZodFormState, formData: FormData) {
             await sql<Streak>`SELECT streakcount, last_completed_at FROM Streaks WHERE userId = ${userId} AND id = ${payload.id}`;
         if (streakData.rowCount) {
             const data = streakData.rows[0];
-            console.log(dayjs.utc(), "today on server time on server");
-            console.log(
-                data.last_completed_at,
-                "data.last_completed_at on server "
-            );
-            console.log(
-                dayjs(data.last_completed_at),
-                "dayjs last completed on server"
-            );
             const today = dayjs().utc();
-            const last_completed_at = dayjs(data.last_completed_at);
-            if (hasAlreadyUpdatedToday(today, last_completed_at)) {
+            const lastCompletedAt = dayjs(data.last_completed_at).utc();
+            if (
+                hasAlreadyUpdatedToday(
+                    today,
+                    lastCompletedAt,
+                    sessionClaims?.timezone
+                )
+            ) {
                 throw new Error("Already updated streak for today");
             }
             const updatedStreakCount =
-                (streakData.rows[0].streakcount ?? 0) + 1;
+                getStreakCount(
+                    today,
+                    lastCompletedAt,
+                    data.streakcount,
+                    sessionClaims?.timezone
+                ) + 1;
             await sql`UPDATE Streaks SET streakcount = ${updatedStreakCount}, last_completed_at = NOW() AT TIME ZONE 'UTC' WHERE id = ${payload.id} AND userId = ${userId}`;
             revalidatePath("/dashboard");
             return {

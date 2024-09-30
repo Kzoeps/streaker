@@ -1,7 +1,6 @@
 import { Streak } from "@/actions";
 import NoStreaks from "@/app/dashboard/splash-no-streaks";
 import AddDialog from "@/components/ui/add-dialog";
-// import SliderButton from "@/components/ui/slider-button";
 import StreakCard from "@/components/ui/streak-card";
 import { auth } from "@clerk/nextjs/server";
 import { sql } from "@vercel/postgres";
@@ -12,7 +11,7 @@ import UpdateTimezone from "./update-timezone";
 dayjs.extend(utc);
 
 export default async function Dashboard() {
-    const { userId } = auth();
+    const { userId, sessionClaims } = auth();
     const data =
         await sql<Streak>`SELECT *, last_completed_at FROM Streaks WHERE userId = ${userId}`;
     if (data.rowCount === 0) {
@@ -25,6 +24,7 @@ export default async function Dashboard() {
                     {data?.rows.map(
                         ({ id, name, streakcount, last_completed_at }) => (
                             <StreakCard
+                                timezone={sessionClaims?.timezone}
                                 key={id}
                                 last_completed_at={last_completed_at}
                                 id={id}

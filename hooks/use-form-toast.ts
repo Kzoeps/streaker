@@ -20,7 +20,6 @@ export const useFormToast = (
             callbacks?.successCallback &&
             formState.status === FormStatusTypes.SUCCESS
         ) {
-            console.log("suceesss");
             callbacks.successCallback(formState);
         }
         if (
