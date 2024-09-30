@@ -7,6 +7,7 @@ import { sql } from "@vercel/postgres";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import UpdateTimezone from "./update-timezone";
+import Onboarding from "./onboarding";
 
 dayjs.extend(utc);
 
@@ -15,7 +16,12 @@ export default async function Dashboard() {
     const data =
         await sql<Streak>`SELECT *, last_completed_at FROM Streaks WHERE userId = ${userId} ORDER BY created_at DESC`;
     if (data.rowCount === 0) {
-        return <NoStreaks />;
+        return (
+            <div>
+                <NoStreaks />
+                <Onboarding />
+            </div>
+        );
     }
     return (
         <div>

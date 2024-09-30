@@ -14,7 +14,7 @@ export default function NoStreaks() {
                     Create one and start streaking!
                 </p>
                 <AddDialog>
-                    <Button className="transform rounded-full bg-orange-500 px-4 py-2 font-bold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-orange-600">
+                    <Button id="add-streak" className="transform rounded-full bg-orange-500 px-4 py-2 font-bold text-white shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:bg-orange-600">
                         Start Streaking
                     </Button>
                 </AddDialog>
