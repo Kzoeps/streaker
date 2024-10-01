@@ -19,7 +19,6 @@ export default async function Dashboard() {
         return (
             <div>
                 <NoStreaks />
-                <Onboarding />
             </div>
         );
     }
@@ -28,22 +27,27 @@ export default async function Dashboard() {
             <div className="container mx-auto p-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {data?.rows.map(
-                        ({ id, name, streakcount, last_completed_at }) => (
-                            <StreakCard
-                                timezone={sessionClaims?.timezone}
-                                key={id}
-                                last_completed_at={last_completed_at}
-                                id={id}
-                                name={name}
-                                streakcount={streakcount}
-                                checked={false}
-                            />
+                        (
+                            { id, name, streakcount, last_completed_at },
+                            index
+                        ) => (
+                            <div id={`streak-${index}`} key={id}>
+                                <StreakCard
+                                    timezone={sessionClaims?.timezone}
+                                    last_completed_at={last_completed_at}
+                                    id={id}
+                                    name={name}
+                                    streakcount={streakcount}
+                                    checked={false}
+                                />
+                            </div>
                         )
                     )}
                 </div>
             </div>
             <AddDialog />
             <UpdateTimezone />
+            <Onboarding />
         </div>
     );
 }

@@ -24,6 +24,7 @@ export default function AddDialog({ children }: AddDialogProps) {
             ) : (
                 <div className="relative z-10">
                     <Button
+                        id="add-streak"
                         className="fixed bottom-4 right-4 h-12 w-12 rounded-full bg-orange-500 p-0"
                         onClick={() => setIsOpen(true)}
                     >

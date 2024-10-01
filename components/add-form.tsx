@@ -40,7 +40,7 @@ export const AddForm = ({ isOpen, setIsOpen }: AddFormProps) => {
         return undefined;
     }
     return (
-        <div className="relative">
+        <div id="add-form" className="relative">
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <div className="fixed inset-0 bg-black opacity-30"></div>
                 <DialogContent className="fixed top-1/4 w-full max-w-xs rounded-lg bg-white p-6 sm:max-w-sm">
