@@ -47,7 +47,7 @@ export default async function Dashboard() {
             </div>
             <AddDialog />
             <UpdateTimezone />
-            <Onboarding />
+            {!sessionClaims?.onboarded && <Onboarding />}
         </div>
     );
 }

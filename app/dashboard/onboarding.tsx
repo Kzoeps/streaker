@@ -1,19 +1,11 @@
 "use client";
+import { useUser } from "@clerk/nextjs";
 import { Step, Steps } from "intro.js-react";
 import "intro.js/introjs.css";
-// import Joyride, { Step } from "react-joyride";
-// const [run, setRun] = useState(false);
-// const steps: Step[] = [
-//     {
-//         target: "#add-streak",
-//         content:
-//             "Lets start by adding a new streak. Click here to add a new streak.",
-//     },
-// ];
-// useEffect(() => {
-//     setRun(true);
-// }, []);
+import { useEffect, useState } from "react";
 export default function Onboarding() {
+    const [onboarded, setOnboarded] = useState(false);
+    const { user, isLoaded } = useUser();
     const steps: Step[] = [
         {
             element: "#streak-0",
@@ -28,15 +20,35 @@ export default function Onboarding() {
             intro: "You can always add a new streak by clicking here",
         },
     ];
+
+    useEffect(() => {
+        if (isLoaded && user && onboarded) {
+            user.update({
+                unsafeMetadata: {
+                    onboarded: true,
+                },
+            })
+                .then(() => {
+                    console.log("onboarded");
+                })
+                .catch((e) => {
+                    console.log("onboarding failed");
+                    if (e instanceof Error) {
+                        console.error(e.message);
+                    }
+                });
+        }
+    }, [isLoaded, user, onboarded]);
     return (
         <div>
             <Steps
                 enabled
                 steps={steps}
                 initialStep={0}
-                onExit={() => {}}
+                onExit={() => setOnboarded(true)}
                 options={{
                     doneLabel: "Got it!",
+                    disableInteraction: true,
                 }}
             />
         </div>
