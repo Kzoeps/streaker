@@ -34,7 +34,7 @@ export async function POST(req: Request) {
             userMappedTimezone[userid]
         );
         if (difference >= 2 && streakcount !== 0) {
-            await sql<Streak>`UPDATE Streaks SET streakcount = ${0} WHERE id = ${id}`;
+            await sql<Streak>`UPDATE Streaks SET streakcount = ${streakcount - 1} WHERE id = ${id}`;
         }
     }
     return new Response("OK", { status: 200 });
