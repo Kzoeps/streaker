@@ -45,7 +45,7 @@ export const getStreakCount = (
     if (!lastCompleted.isValid()) return 0;
     const difference = getDaysDifference(today, lastCompleted, timezone);
     if (difference > 2) {
-        return 0;
+        return (currentStreakCount || 1) - 1;
     } else {
         return currentStreakCount ?? 0;
     }
